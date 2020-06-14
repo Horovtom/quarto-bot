@@ -21,8 +21,8 @@ class MenuScene(CursorSceneGeneric):
         self.done = True
 
     def rules(self):
-        # TODO:
-        pass
+        self.next = "RULES"
+        self.done = True
 
     def exit(self):
         self.next = None

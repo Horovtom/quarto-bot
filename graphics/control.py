@@ -5,6 +5,7 @@ from graphics.game_scene import GameScene
 from graphics.menu_scene import MenuScene
 import graphics.settings as settings
 from graphics.new_game_scene import NewGameScene
+from graphics.rules_scene import RulesScene
 
 
 class Control:
@@ -21,7 +22,8 @@ class Control:
             "MENU": MenuScene(),
             "GAME": GameScene(),
             "NEWGAME": NewGameScene(),
-            "END": EndGameScene()
+            "END": EndGameScene(),
+            "RULES": RulesScene()
         }
         self.state = self.state_dict["MENU"]
         self.state.initialize(None)

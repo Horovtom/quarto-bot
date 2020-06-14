@@ -38,6 +38,7 @@ def initialize():
     global FONTS, INVENTORY_RECT
     FONTS = {
         "normal": pg.font.SysFont("helvetica", 30, False),
-        "big": pg.font.SysFont("helvetica", 50, True)
+        "big": pg.font.SysFont("helvetica", 50, True),
+        "small": pg.font.SysFont("Times New Roman", 17, False)
     }
     _init_inventory_rect()
