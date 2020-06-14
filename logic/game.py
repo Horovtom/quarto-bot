@@ -5,10 +5,12 @@ from logic.stack import Stack
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, human_players):
         self.board = Board()
         self.stack = Stack()
 
+        self.human_players = human_players
+        print("Initialized with human players: {}".format(self.human_players))
         self.player_on_turn = 0
         self.selected_piece = None
         self.player_won = None

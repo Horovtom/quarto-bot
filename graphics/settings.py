@@ -16,7 +16,9 @@ COLORS = {
     "piece_fg_blue": pg.Color("blue"),
     "piece_fg_green": pg.Color("green"),
     "piece_fg_hole": pg.Color("orange"),
-    "inventory_selected_color": pg.Color("red")
+    "inventory_selected_color": pg.Color("red"),
+    "menu_items": pg.Color("white"),
+    "menu_cursor": pg.Color("yellow")
 }
 
 
@@ -35,6 +37,7 @@ def _init_inventory_rect():
 def initialize():
     global FONTS, INVENTORY_RECT
     FONTS = {
-        "normal": pg.font.SysFont("helvetica", 50, True)
+        "normal": pg.font.SysFont("helvetica", 30, False),
+        "big": pg.font.SysFont("helvetica", 50, True)
     }
     _init_inventory_rect()

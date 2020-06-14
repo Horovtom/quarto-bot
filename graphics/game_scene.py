@@ -21,18 +21,21 @@ class GameScene(Scene):
         self.game = None
         self.board: Optional[Board] = None
         self.inventory: Optional[Inventory] = None
-        self.piece_repository : Optional[PieceRepository] = None
+        self.piece_repository: Optional[PieceRepository] = None
+        self.human_players = 2
+
         self.reset()
 
     def reset(self):
         """
         Prepare for next run
         """
-        Scene.reset(self)
-        self.game = Game()
-        self.piece_repository = PieceRepository(settings.BOARD_RECT)
-        self.board = Board(self.game, self.piece_repository, settings.BOARD_RECT)
-        self.inventory = Inventory(self.game, self.piece_repository, settings.INVENTORY_RECT)
+        super().reset()
+        self.game = None
+        self.board = None
+        self.inventory = None
+        self.piece_repository = None
+        self.human_players = 2
 
     def get_event(self, event):
         if event.type == pg.MOUSEBUTTONUP and self.game.is_interactive_step():
@@ -46,10 +49,16 @@ class GameScene(Scene):
                 # We need to place it onto the board
                 if self.board.pos.collidepoint(*pos):
                     self.board.clicked(*pos)
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_ESCAPE:
+                self.next = "MENU"
+                self.done = True
 
     def update(self, now):
         Scene.update(self, now)
         if self.game.someone_won():
+            self.next = "END"
+            self.next_args = "{}".format(self.game.player_won)
             self.done = True
 
         self.board.update(now)
@@ -62,3 +71,11 @@ class GameScene(Scene):
         self.board.draw(surface)
         self.inventory.draw(surface)
         self.piece_repository.draw(surface)
+
+    def initialize(self, *args):
+        self.human_players = args[0]
+        self.game = Game(self.human_players)
+        self.piece_repository = PieceRepository(settings.BOARD_RECT)
+        self.board = Board(self.game, self.piece_repository, settings.BOARD_RECT)
+        self.inventory = Inventory(self.game, self.piece_repository, settings.INVENTORY_RECT)
+        self.initialized = True

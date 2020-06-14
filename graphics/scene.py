@@ -1,21 +1,17 @@
+import abc
 
-import pygame as pg
-import graphics.settings as settings
 
-class Scene:
-    def __init__(self, next_state=None):
+class Scene(abc.ABC):
+    def __init__(self, next_state=None, next_args=None):
         self.next = next_state
+        self.next_args = next_args
         self.done = False
-        self.start_time = None
-
-    def startup(self, now):
-        """Set present time and take a snapshot of the display."""
-        self.start_time = now
+        self.initialized = False
 
     def reset(self):
         """Prepare for next time scene has control."""
         self.done = False
-        self.start_time = None
+        self.initialized = False
 
     def get_event(self, event):
         """Overload in child."""
@@ -23,5 +19,10 @@ class Scene:
 
     def update(self, now):
         """If the start time has not been set run necessary startup."""
-        if not self.start_time:
-            self.startup(now)
+
+    def initialize(self, *args):
+        self.initialized = True
+
+    @abc.abstractmethod
+    def draw(self, surface):
+        pass

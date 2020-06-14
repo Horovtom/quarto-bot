@@ -1,8 +1,10 @@
 import pygame as pg
 
+from graphics.end_game_scene import EndGameScene
 from graphics.game_scene import GameScene
 from graphics.menu_scene import MenuScene
 import graphics.settings as settings
+from graphics.new_game_scene import NewGameScene
 
 
 class Control:
@@ -16,11 +18,13 @@ class Control:
         self.fps = 60.0
         self.done = False
         self.state_dict = {
-            "START": MenuScene("START"),
+            "MENU": MenuScene(),
             "GAME": GameScene(),
-            "END": MenuScene("END.")
+            "NEWGAME": NewGameScene(),
+            "END": EndGameScene()
         }
-        self.state = self.state_dict["START"]
+        self.state = self.state_dict["MENU"]
+        self.state.initialize(None)
 
     def event_loop(self):
         """
@@ -38,15 +42,19 @@ class Control:
         now = pg.time.get_ticks()
         self.state.update(now)
         if self.state.done:
-            self.state.reset()
-            self.state = self.state_dict[self.state.next]
+            if self.state.next is not None:
+                args = self.state.next_args
+                self.state.reset()
+                self.state = self.state_dict[self.state.next]
+                self.state.initialize(args)
+            else:
+                self.done = True
 
     def draw(self):
         """
         Draw the current scene if it is ready
         """
-
-        if self.state.start_time:
+        if self.state.initialized:
             self.state.draw(self.screen)
 
     def display_fps(self):
